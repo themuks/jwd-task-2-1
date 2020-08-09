@@ -3,6 +3,7 @@ package com.kuntsevich.task1.model.dao.impl;
 import com.kuntsevich.task1.entity.Oven;
 import com.kuntsevich.task1.exception.DaoException;
 import com.kuntsevich.task1.model.dao.Dao;
+import com.kuntsevich.task1.model.dao.constant.FileDaoConstant;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,10 +25,10 @@ public class OvenFileDaoImpl implements Dao<Oven> {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = bufferedReader.readLine()) != null && !line.isBlank()) {
-                int colonPos = line.indexOf(':');
+                int colonPos = line.indexOf(FileDaoConstant.CLASS_NAME_DELIMITER);
                 String className = line.substring(0, colonPos - 1);
                 if (className.equals("Oven")) {
-                    String[] params = line.substring(colonPos + 1).split(", ");
+                    String[] params = line.substring(colonPos + 1).split(FileDaoConstant.PARAM_DELIMITER);
                     int powerConsumption = Integer.parseInt(getParamValue(params[0]));
                     int weight = Integer.parseInt(getParamValue(params[1]));
                     int capacity = Integer.parseInt(getParamValue(params[2]));
@@ -61,8 +62,7 @@ public class OvenFileDaoImpl implements Dao<Oven> {
     }
 
     private String getParamValue(String paramLine) {
-        int delimiterPos = paramLine.indexOf('=');
-        String value = paramLine.substring(delimiterPos + 1);
-        return value;
+        int delimiterPos = paramLine.indexOf(FileDaoConstant.VALUE_DELIMITER);
+        return paramLine.substring(delimiterPos + 1);
     }
 }

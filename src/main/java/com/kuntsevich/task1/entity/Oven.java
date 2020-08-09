@@ -1,6 +1,6 @@
 package com.kuntsevich.task1.entity;
 
-public class Oven {
+public class Oven implements Appliance {
     private int ovenId;
     private int powerConsumption;
     private int weight;
