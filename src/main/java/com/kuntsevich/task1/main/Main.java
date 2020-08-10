@@ -1,19 +1,16 @@
 package com.kuntsevich.task1.main;
 
-import com.kuntsevich.task1.entity.Oven;
-import com.kuntsevich.task1.exception.ServiceException;
-import com.kuntsevich.task1.model.service.impl.OvenApplianceServiceImpl;
+import com.kuntsevich.task1.controller.Controller;
+import com.kuntsevich.task1.controller.entity.Request;
+import com.kuntsevich.task1.controller.entity.Response;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
-        OvenApplianceServiceImpl ovenApplianceService = new OvenApplianceServiceImpl();
-        try {
-            List<Oven> ovens = ovenApplianceService.findAll();
-            System.out.println(ovens);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+        Controller controller = new Controller();
+        Request request = new Request("FIND_ALL_OVENS", new HashMap<>());
+        Response<?> response = controller.executeTask(request);
+        System.out.println("response = " + response);
     }
 }
