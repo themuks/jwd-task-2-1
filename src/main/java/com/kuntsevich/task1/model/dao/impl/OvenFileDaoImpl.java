@@ -33,7 +33,7 @@ public class OvenFileDaoImpl implements Dao<Oven> {
                         int capacity = Integer.parseInt(getParamValue(params[2]));
                         float height = Float.parseFloat(getParamValue(params[3]));
                         float width = Float.parseFloat(getParamValue(params[4]));
-                        Oven oven = new Oven(-1, powerConsumption, weight, capacity, height, width);
+                        Oven oven = new Oven(powerConsumption, weight, capacity, height, width);
                         ovens.add(oven);
                     }
                 }
