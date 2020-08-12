@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class FindAllOvensCommand implements Command {
+public class FindAllOvenCommand implements Command {
     @Override
-    public Response<Oven> execute(Map<String, String> params) {
+    public Response<?> execute(Map<String, String> params) {
         Response<Oven> response;
         OvenApplianceServiceImpl ovenApplianceService = new OvenApplianceServiceImpl();
         try {

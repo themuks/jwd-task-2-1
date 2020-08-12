@@ -1,6 +1,7 @@
 package com.kuntsevich.task1.model.dao.impl;
 
-import com.kuntsevich.task1.entity.Oven;
+import com.kuntsevich.task1.entity.FilterType;
+import com.kuntsevich.task1.entity.VacuumCleaner;
 import com.kuntsevich.task1.exception.DaoException;
 import com.kuntsevich.task1.model.dao.Dao;
 import com.kuntsevich.task1.model.dao.constant.FileDaoConstant;
@@ -10,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OvenFileDaoImpl implements Dao<Oven> {
+public class VacuumCleanerFileDaoImpl implements Dao<VacuumCleaner> {
     @Override
-    public Optional<Oven> findById(int id) throws DaoException {
+    public Optional<VacuumCleaner> findById(int id) throws DaoException {
         return Optional.empty();
     }
 
     @Override
-    public List<Oven> findAll() throws DaoException {
-        List<Oven> ovens = new ArrayList<>();
+    public List<VacuumCleaner> findAll() throws DaoException {
+        List<VacuumCleaner> vacuumCleaners = new ArrayList<>();
         File file = new File(FileDaoConstant.DB_FILE_PATH);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -26,15 +27,16 @@ public class OvenFileDaoImpl implements Dao<Oven> {
                 if (!line.isBlank()) {
                     int colonPos = line.indexOf(FileDaoConstant.CLASS_NAME_DELIMITER);
                     String className = line.substring(0, colonPos - 1);
-                    if (className.equals("Oven")) {
+                    if (className.equals("VacuumCleaner")) {
                         String[] params = line.substring(colonPos + 1).split(FileDaoConstant.PARAM_DELIMITER);
                         int powerConsumption = Integer.parseInt(getParamValue(params[0]));
-                        int weight = Integer.parseInt(getParamValue(params[1]));
-                        int capacity = Integer.parseInt(getParamValue(params[2]));
-                        float height = Float.parseFloat(getParamValue(params[3]));
-                        float width = Float.parseFloat(getParamValue(params[4]));
-                        Oven oven = new Oven(-1, powerConsumption, weight, capacity, height, width);
-                        ovens.add(oven);
+                        FilterType filterType = Enum.valueOf(FilterType.class, getParamValue(params[1]).toUpperCase());
+                        String bagType = getParamValue(params[2]);
+                        String wandType = getParamValue(params[3]);
+                        int motorSpeedRegulation = Integer.parseInt(getParamValue(params[4]));
+                        int cleaningWidth = Integer.parseInt(getParamValue(params[5]));
+                        VacuumCleaner vacuumCleaner = new VacuumCleaner(powerConsumption, filterType, bagType, wandType, motorSpeedRegulation, cleaningWidth);
+                        vacuumCleaners.add(vacuumCleaner);
                     }
                 }
             }
@@ -43,21 +45,21 @@ public class OvenFileDaoImpl implements Dao<Oven> {
         } catch (IOException e) {
             throw new DaoException("Error when reading file", e);
         }
-        return ovens;
+        return vacuumCleaners;
     }
 
     @Override
-    public boolean insert(Oven oven) throws DaoException {
+    public boolean insert(VacuumCleaner vacuumCleaner) throws DaoException {
         return false;
     }
 
     @Override
-    public boolean update(Oven oven, String[] params) throws DaoException {
+    public boolean update(VacuumCleaner vacuumCleaner, String[] params) throws DaoException {
         return false;
     }
 
     @Override
-    public boolean delete(Oven oven) throws DaoException {
+    public boolean delete(VacuumCleaner vacuumCleaner) throws DaoException {
         return false;
     }
 

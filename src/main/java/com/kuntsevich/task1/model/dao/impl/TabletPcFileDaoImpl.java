@@ -1,6 +1,7 @@
 package com.kuntsevich.task1.model.dao.impl;
 
-import com.kuntsevich.task1.entity.Oven;
+import com.kuntsevich.task1.entity.CustomColor;
+import com.kuntsevich.task1.entity.TabletPc;
 import com.kuntsevich.task1.exception.DaoException;
 import com.kuntsevich.task1.model.dao.Dao;
 import com.kuntsevich.task1.model.dao.constant.FileDaoConstant;
@@ -10,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OvenFileDaoImpl implements Dao<Oven> {
+public class TabletPcFileDaoImpl implements Dao<TabletPc> {
     @Override
-    public Optional<Oven> findById(int id) throws DaoException {
+    public Optional<TabletPc> findById(int id) throws DaoException {
         return Optional.empty();
     }
 
     @Override
-    public List<Oven> findAll() throws DaoException {
-        List<Oven> ovens = new ArrayList<>();
+    public List<TabletPc> findAll() throws DaoException {
+        List<TabletPc> tabletPcs = new ArrayList<>();
         File file = new File(FileDaoConstant.DB_FILE_PATH);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -26,15 +27,15 @@ public class OvenFileDaoImpl implements Dao<Oven> {
                 if (!line.isBlank()) {
                     int colonPos = line.indexOf(FileDaoConstant.CLASS_NAME_DELIMITER);
                     String className = line.substring(0, colonPos - 1);
-                    if (className.equals("Oven")) {
+                    if (className.equals("TabletPC")) {
                         String[] params = line.substring(colonPos + 1).split(FileDaoConstant.PARAM_DELIMITER);
-                        int powerConsumption = Integer.parseInt(getParamValue(params[0]));
-                        int weight = Integer.parseInt(getParamValue(params[1]));
-                        int capacity = Integer.parseInt(getParamValue(params[2]));
-                        float height = Float.parseFloat(getParamValue(params[3]));
-                        float width = Float.parseFloat(getParamValue(params[4]));
-                        Oven oven = new Oven(-1, powerConsumption, weight, capacity, height, width);
-                        ovens.add(oven);
+                        int batteryCapacity = Integer.parseInt(getParamValue(params[0]));
+                        int displayInches = Integer.parseInt(getParamValue(params[1]));
+                        int memoryRom = Integer.parseInt(getParamValue(params[2]));
+                        int flashMemoryCapacity = Integer.parseInt(getParamValue(params[3]));
+                        CustomColor color = Enum.valueOf(CustomColor.class, getParamValue(params[4]).toUpperCase());
+                        TabletPc tabletPc = new TabletPc(batteryCapacity, displayInches, memoryRom, flashMemoryCapacity, color);
+                        tabletPcs.add(tabletPc);
                     }
                 }
             }
@@ -43,21 +44,21 @@ public class OvenFileDaoImpl implements Dao<Oven> {
         } catch (IOException e) {
             throw new DaoException("Error when reading file", e);
         }
-        return ovens;
+        return tabletPcs;
     }
 
     @Override
-    public boolean insert(Oven oven) throws DaoException {
+    public boolean insert(TabletPc tabletPc) throws DaoException {
         return false;
     }
 
     @Override
-    public boolean update(Oven oven, String[] params) throws DaoException {
+    public boolean update(TabletPc tabletPc, String[] params) throws DaoException {
         return false;
     }
 
     @Override
-    public boolean delete(Oven oven) throws DaoException {
+    public boolean delete(TabletPc tabletPc) throws DaoException {
         return false;
     }
 
