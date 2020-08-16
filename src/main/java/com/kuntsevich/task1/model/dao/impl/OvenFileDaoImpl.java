@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class OvenFileDaoImpl implements Dao<Oven> {
+
+    private static final String CLASS_NAME = "Oven";
+
     @Override
     public Optional<Oven> findById(int id) throws DaoException {
         return Optional.empty();
@@ -26,7 +29,7 @@ public class OvenFileDaoImpl implements Dao<Oven> {
                 if (!line.isBlank()) {
                     int colonPos = line.indexOf(FileDaoConstant.CLASS_NAME_DELIMITER);
                     String className = line.substring(0, colonPos - 1);
-                    if (className.equals("Oven")) {
+                    if (className.equals(CLASS_NAME)) {
                         String[] params = line.substring(colonPos + 1).split(FileDaoConstant.PARAM_DELIMITER);
                         int powerConsumption = Integer.parseInt(getParamValue(params[0]));
                         int weight = Integer.parseInt(getParamValue(params[1]));

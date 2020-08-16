@@ -1,6 +1,6 @@
 package com.kuntsevich.task1.entity;
 
-public class VacuumCleaner extends Appliance {
+public class VacuumCleaner implements Appliance {
     private int powerConsumption;
     private FilterType filterType;
     private String bagType;

@@ -1,6 +1,6 @@
 package com.kuntsevich.task1.entity;
 
-public class Laptop extends Appliance {
+public class Laptop implements Appliance {
     private float batteryCapacity;
     private Os os;
     private int memoryRom;

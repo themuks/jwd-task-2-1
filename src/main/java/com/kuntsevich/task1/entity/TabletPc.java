@@ -1,6 +1,6 @@
 package com.kuntsevich.task1.entity;
 
-public class TabletPc extends Appliance {
+public class TabletPc implements Appliance {
     private int batteryCapacity;
     private int displayInches;
     private int memoryRom;

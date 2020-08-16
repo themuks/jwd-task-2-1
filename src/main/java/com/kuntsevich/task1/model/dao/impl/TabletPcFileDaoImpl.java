@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class TabletPcFileDaoImpl implements Dao<TabletPc> {
+
+    private static final String CLASS_NAME = "TabletPC";
+
     @Override
     public Optional<TabletPc> findById(int id) throws DaoException {
         return Optional.empty();
@@ -27,7 +30,7 @@ public class TabletPcFileDaoImpl implements Dao<TabletPc> {
                 if (!line.isBlank()) {
                     int colonPos = line.indexOf(FileDaoConstant.CLASS_NAME_DELIMITER);
                     String className = line.substring(0, colonPos - 1);
-                    if (className.equals("TabletPC")) {
+                    if (className.equals(CLASS_NAME)) {
                         String[] params = line.substring(colonPos + 1).split(FileDaoConstant.PARAM_DELIMITER);
                         int batteryCapacity = Integer.parseInt(getParamValue(params[0]));
                         int displayInches = Integer.parseInt(getParamValue(params[1]));

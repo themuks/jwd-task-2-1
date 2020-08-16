@@ -1,6 +1,6 @@
 package com.kuntsevich.task1.entity;
 
-public class Speakers extends Appliance {
+public class Speakers implements Appliance {
     private int powerConsumption;
     private int numberOfSpeakers;
     private FloatRange frequencyRange;
