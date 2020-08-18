@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class EmptyCommand implements Command {
     @Override
-    public Response execute(Map<String, String> params) {
+    public Response execute(Map<String, Object> params) {
         return new Response(false, new ArrayList<>());
     }
 }

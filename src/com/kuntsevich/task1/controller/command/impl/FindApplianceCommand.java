@@ -12,14 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class FindAllApplianceCommand implements Command {
+public class FindApplianceCommand implements Command {
     @Override
-    public Response execute(Map<String, String> params) {
+    public Response execute(Map<String, Object> params) {
         Response response;
         ApplianceService applianceService = ServiceFactory.getInstance().getApplianceService();
         try {
-            Criteria criteria = new Criteria(params.get("applianceName"));
-            List<Appliance> appliances = applianceService.findAll(criteria);
+            Criteria criteria = new Criteria((String) params.get("applianceName"));
+            Map<String, Object> criteriaParams = (Map<String, Object>) params.get("criteriaParams");
+            criteria.addAll(criteriaParams);
+            Appliance appliance = applianceService.find(criteria);
+            List<Appliance> appliances = new ArrayList<>();
+            appliances.add(appliance);
             response = new Response(false, appliances);
         } catch (ServiceException e) {
             response = new Response(true, new ArrayList<>());

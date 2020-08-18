@@ -2,7 +2,7 @@ package com.kuntsevich.task1.model.dao.creator.impl;
 
 import com.kuntsevich.task1.entity.Appliance;
 import com.kuntsevich.task1.entity.CustomColor;
-import com.kuntsevich.task1.entity.TabletPc;
+import com.kuntsevich.task1.entity.TabletPC;
 import com.kuntsevich.task1.exception.ApplianceCreatorException;
 import com.kuntsevich.task1.model.dao.creator.ApplianceCreator;
 
@@ -17,7 +17,7 @@ public class TabletPcApplianceCreator implements ApplianceCreator {
             int memoryRom = Integer.parseInt(params.get(2));
             int flashMemoryCapacity = Integer.parseInt(params.get(3));
             CustomColor color = Enum.valueOf(CustomColor.class, params.get(4).toUpperCase());
-            return new TabletPc(batteryCapacity, displayInches, memoryRom, flashMemoryCapacity, color);
+            return new TabletPC(batteryCapacity, displayInches, memoryRom, flashMemoryCapacity, color);
         } catch (NumberFormatException e) {
             throw new ApplianceCreatorException("Can't create appliance because params are invalid");
         }

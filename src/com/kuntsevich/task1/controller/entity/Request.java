@@ -4,9 +4,9 @@ import java.util.Map;
 
 public class Request {
     private String command;
-    private Map<String, String> params;
+    private Map<String, Object> params;
 
-    public Request(String command, Map<String, String> params) {
+    public Request(String command, Map<String, Object> params) {
         this.command = command;
         this.params = params;
     }
@@ -19,11 +19,11 @@ public class Request {
         this.command = command;
     }
 
-    public Map<String, String> getParams() {
+    public Map<String, Object> getParams() {
         return params;
     }
 
-    public void setParams(Map<String, String> params) {
+    public void setParams(Map<String, Object> params) {
         this.params = params;
     }
 

@@ -10,7 +10,7 @@ import java.util.Map;
 public class Controller {
     public Response executeTask(Request request) {
         Command command = CommandProvider.defineCommand(request.getCommand());
-        Map<String, String> params = request.getParams();
+        Map<String, Object> params = request.getParams();
         return command.execute(params);
     }
 }

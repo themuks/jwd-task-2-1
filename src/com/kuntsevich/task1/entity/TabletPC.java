@@ -1,13 +1,13 @@
 package com.kuntsevich.task1.entity;
 
-public class TabletPc implements Appliance {
+public class TabletPC implements Appliance {
     private int batteryCapacity;
     private int displayInches;
     private int memoryRom;
     private int flashMemoryCapacity;
     private CustomColor color;
 
-    public TabletPc(int batteryCapacity, int displayInches, int memoryRom, int flashMemoryCapacity, CustomColor color) {
+    public TabletPC(int batteryCapacity, int displayInches, int memoryRom, int flashMemoryCapacity, CustomColor color) {
         this.batteryCapacity = batteryCapacity;
         this.displayInches = displayInches;
         this.memoryRom = memoryRom;
@@ -63,7 +63,7 @@ public class TabletPc implements Appliance {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TabletPc tabletPc = (TabletPc) o;
+        TabletPC tabletPc = (TabletPC) o;
         return batteryCapacity == tabletPc.batteryCapacity
                 && displayInches == tabletPc.displayInches
                 && memoryRom == tabletPc.memoryRom

@@ -1,5 +1,7 @@
 package com.kuntsevich.task1.entity;
 
+import java.text.DecimalFormat;
+
 public class FloatRange {
     private float from;
     private float to;
@@ -47,10 +49,9 @@ public class FloatRange {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("FloatRange{");
-        sb.append("from=").append(from);
-        sb.append(", to=").append(to);
-        sb.append('}');
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        StringBuilder sb = new StringBuilder(decimalFormat.format(from));
+        sb.append('-').append(decimalFormat.format(to));
         return sb.toString();
     }
 }
