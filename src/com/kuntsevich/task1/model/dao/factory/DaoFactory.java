@@ -1,11 +1,12 @@
 package com.kuntsevich.task1.model.dao.factory;
 
-import com.kuntsevich.task1.model.dao.impl.ApplianceDao;
+import com.kuntsevich.task1.model.dao.ApplianceDao;
+import com.kuntsevich.task1.model.dao.impl.ApplianceDaoImpl;
 
 public class DaoFactory {
     private static volatile DaoFactory instance;
 
-    private final ApplianceDao applianceDao = new ApplianceDao();
+    private final ApplianceDao applianceDao = new ApplianceDaoImpl();
 
     private DaoFactory() {
     }

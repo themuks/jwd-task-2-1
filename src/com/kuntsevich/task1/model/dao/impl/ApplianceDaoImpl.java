@@ -4,7 +4,7 @@ import com.kuntsevich.task1.entity.Appliance;
 import com.kuntsevich.task1.entity.Criteria;
 import com.kuntsevich.task1.exception.ApplianceCreatorException;
 import com.kuntsevich.task1.exception.DaoException;
-import com.kuntsevich.task1.model.dao.Dao;
+import com.kuntsevich.task1.model.dao.ApplianceDao;
 import com.kuntsevich.task1.model.dao.constant.FileDaoConstant;
 import com.kuntsevich.task1.model.dao.creator.ApplianceCreator;
 import com.kuntsevich.task1.model.dao.creator.provider.ApplianceCreatorProvider;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ApplianceDao implements Dao<Appliance> {
+public class ApplianceDaoImpl implements ApplianceDao {
     @Override
     public List<Appliance> find(Criteria criteria) throws DaoException {
         List<Appliance> appliances = new ArrayList<>();
@@ -28,9 +28,9 @@ public class ApplianceDao implements Dao<Appliance> {
                     String className = line.substring(0, colonPos - 1);
                     if (className.equals(criteria.getGroupSearchName())) {
                         List<String> paramLines = List.of(line.substring(colonPos + 1).split(FileDaoConstant.PARAM_DELIMITER));
-                        List<ObjectParameter> parameters = getObjectParameters(paramLines);
+                        List<ObjectParameter> parameters = getApplianceParameters(paramLines);
                         if (isFitsCriteria(criteria, parameters)) {
-                            appliances.add(createApplianceFromValues(className, parameters));
+                            appliances.add(createAppliance(className, parameters));
                         }
                     }
                 }
@@ -45,7 +45,7 @@ public class ApplianceDao implements Dao<Appliance> {
         return appliances;
     }
 
-    private List<ObjectParameter> getObjectParameters(List<String> paramLines) {
+    private List<ObjectParameter> getApplianceParameters(List<String> paramLines) {
         List<ObjectParameter> parameters = new ArrayList<>();
         for (String paramLine : paramLines) {
             int delimiterPos = paramLine.indexOf(FileDaoConstant.VALUE_DELIMITER);
@@ -57,7 +57,7 @@ public class ApplianceDao implements Dao<Appliance> {
         return parameters;
     }
 
-    private Appliance createApplianceFromValues(String className, List<ObjectParameter> parameters) throws ApplianceCreatorException {
+    private Appliance createAppliance(String className, List<ObjectParameter> parameters) throws ApplianceCreatorException {
         ApplianceCreator applianceCreator = ApplianceCreatorProvider.defineApplianceCreator(className.toUpperCase());
         List<String> values = new ArrayList<>();
         for (ObjectParameter parameter : parameters) {

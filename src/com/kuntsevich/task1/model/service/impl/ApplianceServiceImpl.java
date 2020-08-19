@@ -4,8 +4,8 @@ import com.kuntsevich.task1.entity.Appliance;
 import com.kuntsevich.task1.entity.Criteria;
 import com.kuntsevich.task1.exception.DaoException;
 import com.kuntsevich.task1.exception.ServiceException;
+import com.kuntsevich.task1.model.dao.ApplianceDao;
 import com.kuntsevich.task1.model.dao.factory.DaoFactory;
-import com.kuntsevich.task1.model.dao.impl.ApplianceDao;
 import com.kuntsevich.task1.model.service.ApplianceService;
 import com.kuntsevich.task1.validator.CriteriaValidator;
 
