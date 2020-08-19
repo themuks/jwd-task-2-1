@@ -21,9 +21,7 @@ public class FindApplianceCommand implements Command {
             Criteria criteria = new Criteria((String) params.get("applianceName"));
             Map<String, Object> criteriaParams = (Map<String, Object>) params.get("criteriaParams");
             criteria.addAll(criteriaParams);
-            Appliance appliance = applianceService.find(criteria);
-            List<Appliance> appliances = new ArrayList<>();
-            appliances.add(appliance);
+            List<Appliance> appliances = applianceService.find(criteria);
             response = new Response(false, appliances);
         } catch (ServiceException e) {
             response = new Response(true, new ArrayList<>());

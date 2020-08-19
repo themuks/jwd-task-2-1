@@ -8,6 +8,7 @@ import com.kuntsevich.task1.model.dao.Dao;
 import com.kuntsevich.task1.model.dao.constant.FileDaoConstant;
 import com.kuntsevich.task1.model.dao.creator.ApplianceCreator;
 import com.kuntsevich.task1.model.dao.creator.provider.ApplianceCreatorProvider;
+import com.kuntsevich.task1.model.dao.entity.ObjectParameter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ import java.util.Map;
 
 public class ApplianceDao implements Dao<Appliance> {
     @Override
-    public Appliance find(Criteria criteria) throws DaoException {
+    public List<Appliance> find(Criteria criteria) throws DaoException {
+        List<Appliance> appliances = new ArrayList<>();
         File file = new File(FileDaoConstant.DB_FILE_PATH);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -25,15 +27,10 @@ public class ApplianceDao implements Dao<Appliance> {
                     int colonPos = line.indexOf(FileDaoConstant.CLASS_NAME_DELIMITER);
                     String className = line.substring(0, colonPos - 1);
                     if (className.equals(criteria.getGroupSearchName())) {
-                        String[] paramLines = line.substring(colonPos + 1).split(FileDaoConstant.PARAM_DELIMITER);
-                        List<String> paramValues = new ArrayList<>();
-                        List<String> paramNames = new ArrayList<>();
-                        for (String paramLine : paramLines) {
-                            paramValues.add(getParamValue(paramLine));
-                            paramNames.add(getParamName(paramLine));
-                        }
-                        if (isFitsCriteria(criteria, paramValues, paramNames)) {
-                            return createApplianceFromValues(className, paramValues);
+                        List<String> paramLines = List.of(line.substring(colonPos + 1).split(FileDaoConstant.PARAM_DELIMITER));
+                        List<ObjectParameter> parameters = getObjectParameters(paramLines);
+                        if (isFitsCriteria(criteria, parameters)) {
+                            appliances.add(createApplianceFromValues(className, parameters));
                         }
                     }
                 }
@@ -45,35 +42,39 @@ public class ApplianceDao implements Dao<Appliance> {
         } catch (ApplianceCreatorException e) {
             throw new DaoException("Error defining appliance creator", e);
         }
-        throw new DaoException("Appliance not found");
+        return appliances;
     }
 
-    private Appliance createApplianceFromValues(String className, List<String> paramValues) throws ApplianceCreatorException {
+    private List<ObjectParameter> getObjectParameters(List<String> paramLines) {
+        List<ObjectParameter> parameters = new ArrayList<>();
+        for (String paramLine : paramLines) {
+            int delimiterPos = paramLine.indexOf(FileDaoConstant.VALUE_DELIMITER);
+            String parameterName = paramLine.substring(0, delimiterPos);
+            String parameterValue = paramLine.substring(delimiterPos + 1);
+            ObjectParameter objectParameter = new ObjectParameter(parameterName, parameterValue);
+            parameters.add(objectParameter);
+        }
+        return parameters;
+    }
+
+    private Appliance createApplianceFromValues(String className, List<ObjectParameter> parameters) throws ApplianceCreatorException {
         ApplianceCreator applianceCreator = ApplianceCreatorProvider.defineApplianceCreator(className.toUpperCase());
-        Appliance appliance = applianceCreator.createAppliance(paramValues);
-        return appliance;
+        List<String> values = new ArrayList<>();
+        for (ObjectParameter parameter : parameters) {
+            values.add(parameter.getParameterValue());
+        }
+        return applianceCreator.createAppliance(values);
     }
 
-    private boolean isFitsCriteria(Criteria criteria, List<String> paramValues, List<String> paramNames) {
-        Map<String, Object> criterias = criteria.getCriteria();
-        boolean flag = true;
-        for (int i = 0; i < paramNames.size(); i++) {
-            String paramName = paramNames.get(i);
-            String paramValue = paramValues.get(i);
-            if (criterias.containsKey(paramName) && !criterias.get(paramName).toString().equals(paramValue)) {
-                flag = false;
+    private boolean isFitsCriteria(Criteria criteria, List<ObjectParameter> parameters) {
+        Map<String, Object> criteriaList = criteria.getCriteria();
+        for (ObjectParameter parameter : parameters) {
+            String paramName = parameter.getParameterName();
+            String paramValue = parameter.getParameterValue();
+            if (criteriaList.containsKey(paramName) && !criteriaList.get(paramName).toString().equals(paramValue)) {
+                return false;
             }
         }
-        return flag;
-    }
-
-    private String getParamName(String paramLine) {
-        int delimiterPos = paramLine.indexOf(FileDaoConstant.VALUE_DELIMITER);
-        return paramLine.substring(0, delimiterPos);
-    }
-
-    private String getParamValue(String paramLine) {
-        int delimiterPos = paramLine.indexOf(FileDaoConstant.VALUE_DELIMITER);
-        return paramLine.substring(delimiterPos + 1);
+        return true;
     }
 }
