@@ -6,7 +6,7 @@ public final class SearchCriteria {
     }
 
     public enum Laptop{
-        BATTERY_CAPACITY, OS, MEMORY_ROM, SYSTEM_MEMORY, CPU, DISPLAY_INCHS
+        BATTERY_CAPACITY, OS, MEMORY_ROM, SYSTEM_MEMORY, CPU, DISPLAY_INCHES
     }
 
     public enum Refrigerator{
