@@ -18,11 +18,16 @@ public class FindApplianceCommand implements Command {
         Response response;
         ApplianceService applianceService = ServiceFactory.getInstance().getApplianceService();
         try {
-            Criteria criteria = new Criteria((String) params.get("applianceName"));
+            String applianceName = (String) params.get("applianceName");
             Map<String, Object> criteriaParams = (Map<String, Object>) params.get("criteriaParams");
-            criteria.addAll(criteriaParams);
-            List<Appliance> appliances = applianceService.find(criteria);
-            response = new Response(false, appliances);
+            if (applianceName != null && criteriaParams != null) {
+                Criteria criteria = new Criteria(applianceName);
+                criteria.addAll(criteriaParams);
+                List<Appliance> appliances = applianceService.find(criteria);
+                response = new Response(false, appliances);
+            } else {
+                response = new Response(true, new ArrayList<>());
+            }
         } catch (ServiceException e) {
             response = new Response(true, new ArrayList<>());
         }
