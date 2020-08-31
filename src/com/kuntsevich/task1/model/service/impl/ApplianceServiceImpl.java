@@ -14,7 +14,8 @@ import java.util.List;
 public class ApplianceServiceImpl implements ApplianceService {
     @Override
     public List<Appliance> find(Criteria criteria) throws ServiceException {
-        if (!CriteriaValidator.isCriteriaValid(criteria)) {
+        CriteriaValidator criteriaValidator = new CriteriaValidator();
+        if (!criteriaValidator.isCriteriaValid(criteria)) {
             throw new ServiceException("Criteria is invalid");
         }
         ApplianceDao applianceDao = DaoFactory.getInstance().getApplianceDao();

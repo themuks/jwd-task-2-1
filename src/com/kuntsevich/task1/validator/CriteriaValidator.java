@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class CriteriaValidator {
     private static final String VALIDATION_REGEX = "[A-Z][a-zA-Z]*";
 
-    public static boolean isCriteriaValid(Criteria criteria) {
+    public boolean isCriteriaValid(Criteria criteria) {
         if (criteria == null) {
             return false;
         }
